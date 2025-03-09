@@ -90,6 +90,49 @@ const playerStats = async (req, res) => {
   }
 };
 
+// const selectTeam = (req, res) => {
+//   if (!req.session.isLoggedIn) {
+//     req.session.msg = "Please sign in first to create a team";
+//     res.redirect(302, "/signin");
+//     return;
+//   }
+//   if (req.session.isAdmin) {
+//     req.session.msg = "Admin accounts can't create teams";
+//     res.redirect(302, "/players");
+//     return;
+//   }
+//   res.render("selectTeam", { user: req.session.user, page: "selectTeam" });
+// };
+
+const selectTeam = async (req, res) => {
+  if (!req.session.isLoggedIn) {
+    req.session.msg = "Please sign in first to create a team";
+    res.redirect(302, "/signin");
+    return;
+  }
+  if (req.session.isAdmin) {
+    req.session.msg = "Admin accounts can't create teams";
+    res.redirect(302, "/players");
+    return;
+  }
+  try {
+    const batsmen = await Player.find({ category: "Batsman" });
+    const bowlers = await Player.find({ category: "Bowler" });
+    const allRounders = await Player.find({ category: "All-Rounder" });
+
+    res.render("selectTeam", {
+      batsmen,
+      bowlers,
+      allRounders,
+      user: req.session.user,
+      page: "selectTeam",
+    });
+  } catch (error) {
+    console.error("Error fetching players:", error);
+    res.status(500).send("Error fetching players");
+  }
+};
+
 const errorPage = (req, res) => {
   res.render("error-page", { user: req.session.user, page: "error" });
 };
@@ -102,4 +145,5 @@ module.exports = {
   players,
   playerStats,
   errorPage,
+  selectTeam,
 };
