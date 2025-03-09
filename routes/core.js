@@ -11,9 +11,10 @@ const {
   playerEdit,
   playerAdd,
   selectTeam,
-  errorPage,
   tournamentSummary,
   leaderboard,
+  chatbot,
+  errorPage,
 } = require("../controllers/core");
 
 router.get("/index", index);
@@ -37,6 +38,8 @@ router.get("/select-team", selectTeam);
 router.get("/tournament-summary", tournamentSummary);
 
 router.get("/leaderboard", leaderboard);
+
+router.get("/chatbot", chatbot);
 
 router.get("/error-page", errorPage);
 

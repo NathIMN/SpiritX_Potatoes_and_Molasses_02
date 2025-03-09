@@ -22,13 +22,18 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/players">Players</a>
                     </li>
+                    <% if(isAdmin) {%> 
                     <li class="nav-item">
                         <a class="nav-link" href="/player-stats">Player Stats</a>
                     </li>
+                    <% } %> 
                     <li class="nav-item">
                         <a class="nav-link" href="#">Tournament Summary</a>
                     </li>
                 </ul>
+            </div>
+            <div class="thired">
+                <a href="/chatbot" class="btn btn-primary px-3 d-inline" style="margin-right: 4px;">Spiriter</a>
             </div>
             <div class="thired">
                 <a href="/signout" class="btn btn-danger px-3 d-inline">Sign Out</a>

@@ -42,9 +42,17 @@
                                     <li class="nav-item">
                                         <a class="nav-link" href="/tournament-summary">Tournement Summary</a>
                                     </li>
+                                    <% if(!isAdmin) {%>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/select-team">Create Team</a>
+                                        </li>
+                                        <% } %>
                 </ul>
             </div>
 
+            <div class="thired">
+                <a href="/chatbot" class="btn btn-primary px-3 d-inline" style="margin-right: 4px;">Spiriter</a>
+            </div>
             <div class="thired">
                 <div class="thired">
                     <a href="/signout" class="btn btn-danger px-3 d-inline">Sign Out</a>

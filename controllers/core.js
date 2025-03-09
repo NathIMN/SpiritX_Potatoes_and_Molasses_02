@@ -261,6 +261,20 @@ const leaderboard = async (req, res) => {
   }
 };
 
+const chatbot = async (req, res) => {
+  if (!req.session.isLoggedIn) {
+    req.session.msg = "Please sign in";
+    res.redirect(302, "/signin");
+    return;
+  }
+  try {
+    res.render("chatbot");
+  } catch (error) {
+    console.error("Error rendering chatbot:", error);
+    res.status(500).send("Server error");
+  }
+};
+
 const errorPage = (req, res) => {
   res.render("error-page", { user: req.session.user, page: "error" });
 };
@@ -276,6 +290,7 @@ module.exports = {
   playerAdd,
   tournamentSummary,
   leaderboard,
+  chatbot,
   errorPage,
   selectTeam,
 };

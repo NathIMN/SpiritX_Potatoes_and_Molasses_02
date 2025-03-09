@@ -41,9 +41,17 @@
                                     <li class="nav-item">
                                         <a class="nav-link" href="/tournament-summary">Tournement Summary</a>
                                     </li>
+                                    <% if(!isAdmin) {%>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/select-team">Create Team</a>
+                                        </li>
+                                        <% } %>
                 </ul>
             </div>
 
+            <div class="thired">
+                <a href="/chatbot" class="btn btn-primary px-3 d-inline" style="margin-right: 4px;">Spiriter</a>
+            </div>
             <div class="thired">
                 <a href="/signout" class="btn px-3 d-inline" style="background-color: red;">Sign Out</a>
             </div>
@@ -87,25 +95,18 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            // Get all delete buttons
             const deleteButtons = document.querySelectorAll('.btn-danger');
 
-            // Add click event listener to each delete button
             deleteButtons.forEach(button => {
                 button.addEventListener('click', function (e) {
                     e.preventDefault();
 
-                    // Get the player ID from the data attribute
                     const playerId = this.getAttribute('data-playerId');
 
-                    // Confirm deletion
                     if (confirm('Are you sure you want to delete this player?')) {
-                        // Send DELETE request using Axios
                         axios.delete(`http://localhost:3000/api/v1/players/${playerId}`)
                             .then(response => {
-                                // Remove the row from the table on successful deletion
                                 this.closest('tr').remove();
-                                // Alternatively: window.location.reload();
                             })
                             .catch(error => {
                                 console.error('Error:', error);
@@ -115,18 +116,14 @@
                 });
             });
 
-            // Get all edit buttons
             const editButtons = document.querySelectorAll('.btn-primary');
 
-            // Add click event listener to each edit button
             editButtons.forEach(button => {
                 button.addEventListener('click', function (e) {
                     e.preventDefault();
 
-                    // Get the player ID from the data attribute
                     const playerId = this.getAttribute('data-playerId');
 
-                    // Navigate to the edit page
                     window.location.href = `/player-edit/${playerId}`;
                 });
             });
