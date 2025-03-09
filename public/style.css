@@ -1,0 +1,44 @@
+body {
+       background: radial-gradient(circle, #095384 0%, #000000 80%);
+       background-size: cover;
+       background-repeat: no-repeat;
+       background-attachment: fixed;
+       min-height: 100vh;
+       margin: 0;
+}
+
+.container {
+       display: flex;
+       flex-direction: column;
+       justify-content: center;
+       align-items: center;
+       width: 100%;
+}
+
+.middle {
+       width: 100%;
+       display: flex;
+       flex-direction: column;
+       justify-content: center;
+       align-items: center;
+}
+
+.registration-container {
+       min-width: 500px;
+       border-radius: 10px;
+}
+
+.error {
+       color: red;
+}
+
+.top>p {
+       color: #429ad4;
+       font-weight: 700;
+       font-size: 3em;
+}
+
+input::placeholder {
+       color: rgba(255, 255, 255, 0.7) !important; 
+   }
+   
