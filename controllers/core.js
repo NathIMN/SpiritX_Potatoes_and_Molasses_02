@@ -228,6 +228,9 @@ const tournamentSummary = async (req, res) => {
       overallWickets,
       highestRunScorer: highestRunScorer.name || "N/A",
       highestWicketTaker: highestWicketTaker.name || "N/A",
+      user: req.session.user,
+      page: "summary",
+      isAdmin: req.session.isAdmin,
     });
   } catch (error) {
     console.error("Error fetching tournament summary:", error);
@@ -254,7 +257,13 @@ const leaderboard = async (req, res) => {
       }))
       .sort((a, b) => b.points - a.points);
 
-    res.render("leaderboard", { leaderboard, loggedInUser: "spiritx_2025" });
+    res.render("leaderboard", {
+      leaderboard,
+      loggedInUser: "spiritx_2025",
+      user: req.session.user,
+      page: "summary",
+      isAdmin: req.session.isAdmin,
+    });
   } catch (error) {
     console.error("Error fetching leaderboard:", error);
     res.status(500).send("Server Error");
