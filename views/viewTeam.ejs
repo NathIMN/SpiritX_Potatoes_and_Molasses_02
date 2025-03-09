@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Fantasy Team</title>
+    <link rel="stylesheet" href="/teamStyle.css">
+    <style>
+        .players-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            justify-items: center;
+            align-items: center;
+            gap: 20px;
+        }
+
+        /* .player-card {
+            background-color: #f5f5f5;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 200px;
+            text-align: center;
+        } */
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Your Fantasy Team</h1>
+
+        <div class="team-info">
+            <p>Team ID: <%= team.teamId %>
+            </p>
+            <p>Points: <%= team.points %>
+            </p>
+        </div>
+
+        <div class="team-players">
+            <h2>Players</h2>
+
+            <div class="category-section">
+                <h3>Batsmen</h3>
+                <div class="players-grid">
+                    <% team.players.filter(p=> p.category === "Batsman").forEach(player => { %>
+                        <div class="player-card">
+                            <p class="player-name">
+                                <%= player.name %>
+                            </p>
+                            <p class="player-university">
+                                <%= player.university %>
+                            </p>
+                            <div class="stats">
+                                <p>Runs: <%= player.totalRuns %>
+                                </p>
+                                <p>Innings: <%= player.inningsPlayed %>
+                                </p>
+                            </div>
+                        </div>
+                        <% }) %>
+                </div>
+            </div>
+
+            <div class="category-section">
+                <h3>Bowlers</h3>
+                <div class="players-grid">
+                    <% team.players.filter(p=> p.category === "Bowler").forEach(player => { %>
+                        <div class="player-card">
+                            <p class="player-name">
+                                <%= player.name %>
+                            </p>
+                            <p class="player-university">
+                                <%= player.university %>
+                            </p>
+                            <div class="stats">
+                                <p>Wickets: <%= player.wickets %>
+                                </p>
+                                <p>Overs: <%= player.oversBowled %>
+                                </p>
+                            </div>
+                        </div>
+                        <% }) %>
+                </div>
+            </div>
+
+            <div class="category-section">
+                <h3>All-Rounders</h3>
+                <div class="players-grid">
+                    <% team.players.filter(p=> p.category === "All-Rounder").forEach(player => { %>
+                        <div class="player-card">
+                            <p class="player-name">
+                                <%= player.name %>
+                            </p>
+                            <p class="player-university">
+                                <%= player.university %>
+                            </p>
+                            <div class="stats">
+                                <p>Runs: <%= player.totalRuns %>
+                                </p>
+                                <p>Wickets: <%= player.wickets %>
+                                </p>
+                            </div>
+                        </div>
+                        <% }) %>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

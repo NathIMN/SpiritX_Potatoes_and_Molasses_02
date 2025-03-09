@@ -13,7 +13,8 @@ const PlayerSchema = new mongoose.Schema({
   wickets: { type: Number, required: true },
   oversBowled: { type: Number, required: true },
   runsConceded: { type: Number, required: true },
-  readonly: { type: Boolean, default: true },
+  playerId: { type: Number, unique: true },
+  team: { type: mongoose.Schema.Types.ObjectId, ref: "Team", default: null },
 });
 
 PlayerSchema.plugin(sequence, { inc_field: "playerId", start_seq: 2001 }); //auto increment

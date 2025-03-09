@@ -1,0 +1,42 @@
+body {
+       background: url('cricketbg.jpg') no-repeat center center/cover;
+       min-height: 100vh;
+       display: flex;
+       justify-content: center;
+       align-items: center;
+       color: white;
+       backdrop-filter: blur(20px);
+   }
+
+   .container {
+       min-width: 700px;
+       background: rgba(0, 0, 0, 0.8);
+       padding: 20px;
+       border-radius: 10px;
+       box-shadow: 0 0 15px rgba(255, 215, 0, 0.8);
+       text-align: center;
+   }
+
+   h2 {
+       font-size: 28px;
+       font-weight: bold;
+       color: #ffd700;
+       text-transform: uppercase;
+   }
+
+   .table {
+       background: rgba(255, 255, 255, 0.1);
+       color: white;
+   }
+
+   
+
+   .highlight {
+       background-color: #28a745 !important;
+       font-weight: bold;
+   }
+
+   .trophy {
+       font-size: 24px;
+       color: #cab227;
+   }

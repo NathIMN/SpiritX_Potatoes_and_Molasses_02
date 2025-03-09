@@ -12,8 +12,7 @@
     <div class="container">
         <h1>Fantasy Team Selection</h1>
         <div class="tabs">
-            <button onclick="showTab('create-team')">Create Team</button>
-            <button onclick="showTab('team')">Team</button>
+            <button onclick="submitTeam()">Create Team</button>
         </div>
 
         <div id="create-team" class="tab-content">
@@ -45,110 +44,8 @@
         data-bowlers='[<%= bowlers.map(p => JSON.stringify(p)).join(",") %>]'
         data-allrounders='[<%= allRounders.map(p => JSON.stringify(p)).join(",") %>]'>
     </div>
-
-    <script>
-        // Parse player data from hidden element
-        const playerDataElement = document.getElementById("player-data");
-
-        const players = {
-            Batsmen: JSON.parse(playerDataElement.getAttribute("data-batsmen") || "[]"),
-            Bowlers: JSON.parse(playerDataElement.getAttribute("data-bowlers") || "[]"),
-            "All-rounders": JSON.parse(playerDataElement.getAttribute("data-allrounders") || "[]"),
-        };
-
-        let selectedPlayers = [];
-        let budget = 9000000;
-
-        function showTab(tab) {
-            document.getElementById('create-team').style.display = tab === 'create-team' ? 'block' : 'none';
-            document.getElementById('team').style.display = tab === 'team' ? 'block' : 'none';
-            if (tab === 'team') updateTeamTab();
-        }
-
-        function loadPlayers(category) {
-            const playerList = document.getElementById("player-list");
-            playerList.innerHTML = "";
-
-            players[category].forEach(player => {
-                const div = document.createElement("div");
-                div.classList.add("player-card");
-                div.innerHTML = `<p>${player.name}</p><p>${player.university}</p><p>Rs. ${player.cost}</p>`;
-                const btn = document.createElement("button");
-                btn.textContent = "Add";
-                btn.onclick = () => addPlayer(player);
-                div.appendChild(btn);
-                playerList.appendChild(div);
-            });
-        }
-
-        function addPlayer(player) {
-            // Prevent duplicate selection
-            if (selectedPlayers.some(p => p._id === player._id)) {
-                alert("Player already selected!");
-                return;
-            }
-
-            // Check budget and player count
-            //if (budget - player.cost >= 0 && selectedPlayers.length < 11) {
-            if(1){
-                selectedPlayers.push(player);
-                //budget -= player.cost;
-                updateUI();
-            } else {
-                alert("Cannot add more players or exceed budget!");
-            }
-        }
-
-
-        function removePlayer(player) {
-            selectedPlayers = selectedPlayers.filter(p => p._id !== player._id);
-            budget += player.cost;
-            updateUI();
-        }
-
-        function updateUI() {
-            document.querySelector(".budget").textContent = `Rs. ${budget.toLocaleString()}`;
-            document.querySelector(".players-selected").textContent = `Players Selected: ${selectedPlayers.length}/11`;
-
-            const selectedList = document.getElementById("selected-players");
-            selectedList.innerHTML = ""; // Clear previous list
-
-            selectedPlayers.forEach(player => {
-                const div = document.createElement("div");
-                div.classList.add("player-card");
-                div.innerHTML = `<p>${player.name}</p><p>${player.university}</p><p>Rs. ${player.cost}</p>`;
-
-                const btn = document.createElement("button");
-                btn.classList.add("remove");
-                btn.textContent = "Remove";
-                btn.onclick = () => removePlayer(player);
-
-                div.appendChild(btn);
-                selectedList.appendChild(div);
-            });
-        }
-
-
-        function updateTeamTab() {
-            const teamList = document.getElementById("team-players");
-            teamList.innerHTML = "";
-            let totalPoints = 0;
-            selectedPlayers.forEach(player => {
-                totalPoints += player.points;
-                const div = document.createElement("div");
-                div.classList.add("player-card");
-                div.innerHTML = `<p>${player.name}</p><p>${player.university}</p><p>Points: ${player.points}</p>`;
-                teamList.appendChild(div);
-            });
-            if (selectedPlayers.length === 11) {
-                document.getElementById("total-points").textContent = `Total Team Points: ${totalPoints}`;
-                document.getElementById("total-points").style.display = "block";
-            } else {
-                document.getElementById("total-points").style.display = "none";
-            }
-        }
-
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.7.9/dist/axios.min.js"></script>
+    <script src="/selectTeam.js"></script>
 </body>
 
 </html>

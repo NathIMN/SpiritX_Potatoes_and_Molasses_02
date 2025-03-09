@@ -27,7 +27,7 @@ document.getElementById("signInBtn").addEventListener("click", async function (e
     const response = await axios.post("http://localhost:3000/api/v1/users/auth", { username, password: pw });
 
     if (response.status === 200) {
-      window.location.href = "/index";
+      window.location.href = "/players";
     }
   } catch (error) {
     if (error.response) {

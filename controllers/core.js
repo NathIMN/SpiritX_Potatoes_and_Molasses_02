@@ -58,12 +58,16 @@ const players = async (req, res) => {
     const playerList = await Player.find({}, "name university").sort({
       playerId: 1,
     }); // Fetch players sorted by playerId
-    res.render("players", {
-      user: req.session.user,
-      page: "players",
-      players: playerList,
-      isAdmin: req.session.isAdmin,
-    });
+    if (req.session.isAdmin) {
+      res.render("players", {
+        user: req.session.user,
+        page: "players",
+        players: playerList,
+        isAdmin: req.session.isAdmin,
+      });
+    } else {
+      res.redirect(302, "player-stats");
+    }
   } catch (error) {
     console.error("Error fetching players:", error);
     res.status(500).send("Internal Server Error");
@@ -90,19 +94,43 @@ const playerStats = async (req, res) => {
   }
 };
 
-// const selectTeam = (req, res) => {
-//   if (!req.session.isLoggedIn) {
-//     req.session.msg = "Please sign in first to create a team";
-//     res.redirect(302, "/signin");
-//     return;
-//   }
-//   if (req.session.isAdmin) {
-//     req.session.msg = "Admin accounts can't create teams";
-//     res.redirect(302, "/players");
-//     return;
-//   }
-//   res.render("selectTeam", { user: req.session.user, page: "selectTeam" });
-// };
+const playerEdit = async (req, res) => {
+  if (!req.session.isAdmin) {
+    req.session.msg = "idk what to put here";
+    res.redirect(302, "/index");
+    return;
+  }
+  try {
+    const playerId = req.params.id;
+
+    // Fetch player details from the database
+    const player = await Player.findById(playerId);
+
+    if (!player) {
+      return res.status(404).send("Player not found");
+    }
+
+    // Render the edit page with player details
+    res.render("player-edit", { player });
+  } catch (error) {
+    console.error("Error fetching player for edit:", error);
+    res.status(500).send("Server error");
+  }
+};
+
+const playerAdd = async (req, res) => {
+  if (!req.session.isAdmin) {
+    req.session.msg = "idk what to put here";
+    res.redirect(302, "/index");
+    return;
+  }
+  try {
+    res.render("player-add");
+  } catch (error) {
+    console.error("Error rendering add player page:", error);
+    res.status(500).send("Server error");
+  }
+};
 
 const selectTeam = async (req, res) => {
   if (!req.session.isLoggedIn) {
@@ -110,26 +138,126 @@ const selectTeam = async (req, res) => {
     res.redirect(302, "/signin");
     return;
   }
+
   if (req.session.isAdmin) {
     req.session.msg = "Admin accounts can't create teams";
     res.redirect(302, "/players");
     return;
   }
+
   try {
-    const batsmen = await Player.find({ category: "Batsman" });
-    const bowlers = await Player.find({ category: "Bowler" });
-    const allRounders = await Player.find({ category: "All-Rounder" });
+    // Find the current user with populated team data
+    const user = await User.findById(req.session.user._id).populate({
+      path: "team",
+      populate: {
+        path: "players",
+        model: "Player",
+      },
+    });
+
+    // Check if user already has a team
+    if (user.team) {
+      return res.render("viewTeam", {
+        team: user.team,
+        user: user,
+        page: "viewTeam",
+      });
+    }
+
+    // User doesn't have a team yet, proceed with team selection
+    const batsmen = await Player.find({
+      category: "Batsman",
+      team: null,
+    });
+
+    const bowlers = await Player.find({
+      category: "Bowler",
+      team: null,
+    });
+
+    const allRounders = await Player.find({
+      category: "All-Rounder",
+      team: null,
+    });
 
     res.render("selectTeam", {
       batsmen,
       bowlers,
       allRounders,
-      user: req.session.user,
+      user: user,
       page: "selectTeam",
     });
   } catch (error) {
     console.error("Error fetching players:", error);
     res.status(500).send("Error fetching players");
+  }
+};
+
+const tournamentSummary = async (req, res) => {
+  if (!req.session.isLoggedIn) {
+    req.session.msg = "Please sign in";
+    res.redirect(302, "/signin");
+    return;
+  }
+  try {
+    const players = await Player.find({});
+
+    const overallRuns = players.reduce(
+      (sum, player) => sum + (player.totalRuns || 0),
+      0
+    );
+    const overallWickets = players.reduce(
+      (sum, player) => sum + (player.wickets || 0),
+      0
+    );
+
+    const highestRunScorer = players.reduce(
+      (topPlayer, player) =>
+        player.totalRuns > (topPlayer.totalRuns || 0) ? player : topPlayer,
+      {}
+    );
+
+    const highestWicketTaker = players.reduce(
+      (topPlayer, player) =>
+        player.wickets > (topPlayer.wickets || 0) ? player : topPlayer,
+      {}
+    );
+
+    res.render("tournamentSummary", {
+      overallRuns,
+      overallWickets,
+      highestRunScorer: highestRunScorer.name || "N/A",
+      highestWicketTaker: highestWicketTaker.name || "N/A",
+    });
+  } catch (error) {
+    console.error("Error fetching tournament summary:", error);
+    res.status(500).send("Server Error");
+  }
+};
+
+const leaderboard = async (req, res) => {
+  if (!req.session.isLoggedIn) {
+    req.session.msg = "Please sign in";
+    res.redirect(302, "/signin");
+    return;
+  }
+  try {
+    const users = await User.find({ userId: { $gt: 1000 } })
+      .populate("team", "points")
+      .select("username team")
+      .lean();
+
+    const leaderboard = users
+      .map((user) => ({
+        username: user.username,
+        points: user.team ? user.team.points : 0, // Default to 0 if no team
+      }))
+      .sort((a, b) => b.points - a.points);
+
+    res.render("leaderboard", { leaderboard, loggedInUser: "spiritx_2025" });
+  } catch (error) {
+    console.error("Error fetching leaderboard:", error);
+    res.status(500).send("Server Error");
   }
 };
 
@@ -144,6 +272,10 @@ module.exports = {
   signOut,
   players,
   playerStats,
+  playerEdit,
+  playerAdd,
+  tournamentSummary,
+  leaderboard,
   errorPage,
   selectTeam,
 };

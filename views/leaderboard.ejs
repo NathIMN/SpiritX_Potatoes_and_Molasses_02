@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/styleUser.css">
+    <title>Cricket Leaderboard</title>
+</head>
+<body>
+    <div class="container">
+        <h2><i class="bi bi-trophy-fill trophy"></i> Fantasy Cricket Leaderboard</h2>
+        <table class="table table-bordered text-center">
+            <thead>
+                <tr class="h4">
+                    <th>Rank</th>
+                    <th>Username</th>
+                    <th>Points</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% leaderboard.forEach((user, index) => { %>
+                    <tr class="<%= user.username === loggedInUser ? 'highlight' : '' %>">
+                        <td>
+                            <%= index + 1 %> 
+                            <% if (index === 0) { %>
+                                <i class="bi bi-trophy-fill trophy"></i>
+                            <% } %>
+                        </td>
+                        <td><%= user.username %></td>
+                        <td><%= user.points %></td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

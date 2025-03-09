@@ -1,7 +1,20 @@
 const express = require("express");
 const router = express.Router();
 
-const { index, signUp, signIn, signOut, players, playerStats, selectTeam, errorPage } = require("../controllers/core");
+const {
+  index,
+  signUp,
+  signIn,
+  signOut,
+  players,
+  playerStats,
+  playerEdit,
+  playerAdd,
+  selectTeam,
+  errorPage,
+  tournamentSummary,
+  leaderboard,
+} = require("../controllers/core");
 
 router.get("/index", index);
 
@@ -15,7 +28,15 @@ router.get("/players", players);
 
 router.get("/player-stats", playerStats);
 
+router.get("/player-edit/:id", playerEdit);
+
+router.get("/player-add", playerAdd);
+
 router.get("/select-team", selectTeam);
+
+router.get("/tournament-summary", tournamentSummary);
+
+router.get("/leaderboard", leaderboard);
 
 router.get("/error-page", errorPage);
 

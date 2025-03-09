@@ -26,23 +26,29 @@
             <div class="second collapse navbar-collapse">
                 <ul class="navbar-nav mb-lg-0 ">
                     <li class="nav-item ">
-                        <a class="nav-link" aria-current="page" href="/players.html">Players</a>
+                        <a class="nav-link" aria-current="page" href="/players">Players</a>
                     </li>
+                    <% if(isAdmin){ %>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Player Stats</a>
+                        </li>
+                        <% } %>
+                            <% if(isAdmin) {%>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/player-add">Add Player</a>
+                                </li>
+                                <% } %>
 
-                    <li class="nav-item">
-                        <a class="nav-link" href="/playerStats.html">Player Stats</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="/tournementSummary.html">Tournement Summary</a>
-                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/tournament-summary">Tournement Summary</a>
+                                    </li>
                 </ul>
             </div>
 
             <div class="thired">
-                <button type="submit" class="btn btn-danger px-3 d-inline">
-                    Log Out
-                </button>
+                <div class="thired">
+                    <a href="/signout" class="btn btn-danger px-3 d-inline">Sign Out</a>
+                </div>
             </div>
         </div>
     </nav>
@@ -53,8 +59,8 @@
             <h5>Players List</h5>
             <table class="table table-hover">
                 <tbody id="playersTable">
-                    <% if (players && players.length > 0) { %>
-                        <% players.forEach(player => { %>
+                    <% if (players && players.length> 0) { %>
+                        <% players.forEach(player=> { %>
                             <tr onclick="showPlayerDetails(
                                 '<%= player.name %>', 
                                 '<%= player.university %>', 
@@ -66,14 +72,16 @@
                                 <%= player.oversBowled %>,
                                 <%= player.runsConceded %>
                             )">
-                                <td><%= player.name %></td>
+                                <td>
+                                    <%= player.name %>
+                                </td>
                             </tr>
-                        <% }); %>
-                    <% } else { %>
-                        <tr>
-                            <td>No players found</td>
-                        </tr>
-                    <% } %>
+                            <% }); %>
+                                <% } else { %>
+                                    <tr>
+                                        <td>No players found</td>
+                                    </tr>
+                                    <% } %>
                 </tbody>
             </table>
         </div>
@@ -136,7 +144,7 @@
         }
 
         // Auto-select the first player when the page loads (optional)
-        window.onload = function() {
+        window.onload = function () {
             const firstPlayerRow = document.querySelector("#playersTable tr");
             if (firstPlayerRow) {
                 firstPlayerRow.click();
@@ -144,4 +152,5 @@
         };
     </script>
 </body>
+
 </html>

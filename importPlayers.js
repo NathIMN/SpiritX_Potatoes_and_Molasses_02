@@ -11,7 +11,7 @@ mongoose
   .then(() => console.log("Connected to MongoDB"))
   .catch((err) => console.error("MongoDB connection error:", err));
 
-const filePath = "/home/nath/Downloads/sample_data.csv"; // Path to CSV
+const filePath = "./sample_data.csv"; // Path to CSV
 const validCategories = ["Batsman", "Bowler", "All-Rounder"];
 const players = [];
 

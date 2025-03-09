@@ -46,11 +46,11 @@ const updatePlayer = async (req, res) => {
       return res.status(404).json({ msg: `no player with id: ${playerID}` });
     }
     
-    if (existingPlayer.readonly === true) {
-      return res.status(403).json({ 
-        msg: "Cannot update this player. Player record is read-only." 
-      });
-    }
+    // if (existingPlayer.readonly === true) {
+    //   return res.status(403).json({ 
+    //     msg: "Cannot update this player. Player record is read-only." 
+    //   });
+    // }
     
     const player = await Player.findOneAndUpdate(
       { _id: playerID }, 
@@ -78,11 +78,11 @@ const deletePlayer = async (req, res) => {
       return res.status(404).json({ msg: `no player with id: ${playerID}` });
     }
     
-    if (existingPlayer.readonly === true) {
-      return res.status(403).json({ 
-        msg: "Cannot delete this player. Player record is read-only." 
-      });
-    }
+    // if (existingPlayer.readonly === true) {
+    //   return res.status(403).json({ 
+    //     msg: "Cannot delete this player. Player record is read-only." 
+    //   });
+    // }
     
     const player = await Player.findOneAndDelete({ _id: playerID });
     

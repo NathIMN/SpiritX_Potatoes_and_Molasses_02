@@ -5,6 +5,7 @@ const session = require("express-session");
 const app = express();
 const users = require("./routes/users");
 const players = require("./routes/players");
+const teams = require("./routes/teams");
 const spiriter = require("./routes/spiriter");
 const core = require("./routes/core");
 const notFound = require("./middleware/not-found"); //404 handler
@@ -37,6 +38,8 @@ app.use(
 app.use("/api/v1/users", users);
 
 app.use("/api/v1/players", players);
+
+app.use("/api/v1/teams", teams);
 
 app.use("/api/v1/spiriter", spiriter);
 

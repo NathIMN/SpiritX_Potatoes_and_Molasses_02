@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+       <meta charset="UTF-8">
+       <meta name="viewport" content="width=device-width, initial-scale=1.0">
+       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+       <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+              integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+              crossorigin="anonymous" />
+       <link rel="stylesheet" href="styleAdmin.css">
+       <title>Add Player</title>
+</head>
+
+<body>
+       <nav class="navbar navbar-expand-lg fixed-top">
+              <div class="container">
+                     <div class="first h4 d-inline">
+                            <i class="bi bi-boxes"></i>
+                            <span class="brand-name mb-lg-0">Spirit11</span>
+                     </div>
+
+                     <div class="second collapse navbar-collapse">
+                            <ul class="navbar-nav mb-lg-0 ">
+                                   <li class="nav-item ">
+                                          <a class="nav-link" aria-current="page" href="/players">Players</a>
+                                   </li>
+
+                                   <li class="nav-item">
+                                          <a class="nav-link" href="/player-stats">Player Stats</a>
+                                   </li>
+
+                                   <li class="nav-item">
+                                          <a class="nav-link" href="/tournement-summary">Tournement Summary</a>
+                                   </li>
+
+                                   <li class="nav-item">
+                                          <a class="nav-link" href="/player-add">Add Player</a>
+                                   </li>
+                            </ul>
+                     </div>
+
+                     <div class="thired">
+                            <button type="submit" class="btn btn-danger px-3 d-inline">
+                                   Log Out
+                            </button>
+                     </div>
+              </div>
+       </nav>
+
+       <br><br>
+
+       <div class="container login">
+              <div class="top mt-5 ">
+                     <p class="font-italic font-weight-bold"><span><i class="bi bi-boxes"></i></span> Spirit11
+                     </p>
+              </div>
+
+              <div class="middle">
+                     <div class="registration-container m-3 p-3 text-white">
+                            <h2 class="text-center mb-4 text-white">Add New Player</h2>
+
+                            <div class="mb-3">
+                                   <label class="form-label">Name</label>
+                                   <input type="text" id="edit-name"
+                                          class="form-control border border-primary text-white bg-transparent" required>
+                            </div>
+                            <div class="mb-3">
+                                   <label class="form-label">University</label>
+                                   <input type="text" id="edit-university"
+                                          class="form-control border border-primary text-white bg-transparent" required>
+                            </div>
+                            <div class="mb-3">
+                                   <label class="form-label">Category</label>
+                                   <select id="edit-category" class="form-control border border-primary text-white bg-transparent" required>
+                                       <option value="" disabled selected>Select category</option>
+                                       <option value="Batsman" style="color: black">Batsman</option>
+                                       <option value="Bowler" style="color: black">Bowler</option>
+                                       <option value="All-Rounder" style="color: black">All-Rounder</option>
+                                   </select>
+                               </div>
+                            <div class="mb-3">
+                                   <label class="form-label">Total Runs</label>
+                                   <input type="number" id="edit-total-runs"
+                                          class="form-control border border-primary text-white bg-transparent" required>
+                            </div>
+                            <div class="mb-3">
+                                   <label class="form-label">Balls Faced</label>
+                                   <input type="number" id="edit-balls-faced"
+                                          class="form-control border border-primary text-white bg-transparent" required>
+                            </div>
+                            <div class="mb-3">
+                                   <label class="form-label">Innings Played</label>
+                                   <input type="number" id="edit-innings-played"
+                                          class="form-control border border-primary text-white bg-transparent" required>
+                            </div>
+                            <div class="mb-3">
+                                   <label class="form-label">Wickets</label>
+                                   <input type="number" id="edit-wickets"
+                                          class="form-control border border-primary text-white bg-transparent" required>
+                            </div>
+                            <div class="mb-3">
+                                   <label class="form-label">Overs Bowled</label>
+                                   <input type="number" id="edit-overs-bowled"
+                                          class="form-control border border-primary text-white bg-transparent" required>
+                            </div>
+                            <div class="mb-3">
+                                   <label class="form-label">Runs Conceded</label>
+                                   <input type="number" id="edit-runs-conceded"
+                                          class="form-control border border-primary text-white bgform-control border border-primary text-white bg-transparent"
+                                          required>
+                            </div>
+
+                            <div class="mt-5 text-center">
+                                   <button id="signUpBtn" type="submit" class="btn btn-primary px-5 d-inline">
+                                          Add
+                                   </button>
+                            </div>
+
+                     </div>
+              </div>
+       </div>
+
+</body>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+       document.addEventListener('DOMContentLoaded', function () {
+              const addButton = document.getElementById('signUpBtn');
+
+              addButton.addEventListener('click', function (e) {
+                     e.preventDefault();
+
+                     // Gather player data from the form
+                     const newPlayer = {
+                            name: document.getElementById('edit-name').value,
+                            university: document.getElementById('edit-university').value,
+                            category: document.getElementById('edit-category').value,
+                            totalRuns: document.getElementById('edit-total-runs').value,
+                            ballsFaced: document.getElementById('edit-balls-faced').value,
+                            inningsPlayed: document.getElementById('edit-innings-played').value,
+                            wickets: document.getElementById('edit-wickets').value,
+                            oversBowled: document.getElementById('edit-overs-bowled').value,
+                            runsConceded: document.getElementById('edit-runs-conceded').value
+                     };
+
+                     // Validate form fields
+                     for (const key in newPlayer) {
+                            if (!newPlayer[key]) {
+                                   alert('Please fill in all fields');
+                                   return;
+                            }
+                     }
+
+                     // Send POST request to add player
+                     axios.post('/api/v1/players', newPlayer)
+                            .then(response => {
+                                   alert('Player added successfully!');
+                                   // Clear form fields
+                                   document.querySelectorAll('input').forEach(input => {
+                                          input.value = '';
+                                   });
+                                   // Optional: Redirect to players list
+                                   window.location.href = '/players';
+                            })
+                            .catch(error => {
+                                   console.error('Error adding player:', error);
+                                   alert('Failed to add player. Please try again.');
+                            });
+              });
+       });
+</script>
+
+</html>
