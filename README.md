@@ -1,6 +1,6 @@
 # SpiritX_Potatoes_and_Molasses_02
 
-run npm -i
+run npm i
 
 create a .env file with following keys
 MONGO_URI = 
